@@ -12,10 +12,10 @@ How to build, push, tag container (DOCKER)
 How to run container (DOCKER)
 _________________
 Kubernetes:
-How it manages containers
 What is a Node (BASICS)
 What is a Cluster (BASICS)
 What is a Federation (BASICS)
+Kubectl (KUBERNETES)
 Pods vs Containers vs Deployments (KUBERNETES)
 What are Resource Definitions (KUBERNETES)
 Services (KUBERNETES)
