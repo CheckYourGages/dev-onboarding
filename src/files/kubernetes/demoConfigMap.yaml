@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-nginx-configmap
+  labels:
+    app: nginx
+    instance: demo
+data:
+  index.html: |-
+    <html>
+      <head>
+        <title>
+          Nginx Kubernetes Demo
+        </title>
+      </head>
+      <body>
+        Fill in the body of this HTML file.
+      </body>
+    </html>

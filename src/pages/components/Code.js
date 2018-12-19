@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
-import { Segment } from 'semantic-ui-react';
+import { Table, Segment } from 'semantic-ui-react';
 
 class Code extends Component {
 
 	render() {
-		return (
-			<Segment inverted compact style={{ fontFamily: 'monospace' }}>
-				{this.props.children}
-			</Segment>
-		);
+		if(!this.props.block){
+			return (
+				<text style={{ backgroundColor: '#222', color: 'white', fontFamily: 'monospace' }}>
+					{this.props.children}
+				</text>
+			);
+		}
+		else {
+			return (
+				<pre style={{ backgroundColor: '#222', color: 'white' }}>
+					<code>
+						{this.props.children}
+					</code>
+				</pre>
+			);
+		};
 	}
 }
 
