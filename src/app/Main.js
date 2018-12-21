@@ -20,7 +20,7 @@ class Main extends Component {
     return (
       <div>
         <Container textAlign="center" style={{ marginTop: '2em', marginBottom:'1.5em' }}>
-          <Header as='h1'>SLATE Onboarding Tutorial</Header>
+          <Header as='h1'>SLATE Application Developer's Tutorial</Header>
           <HashRouter>
             <div>
               <Menu pointing secondary>
