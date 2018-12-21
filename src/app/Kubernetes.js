@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Header, List } from 'semantic-ui-react';
+import { Container, Divider, Grid, Header, List, Segment } from 'semantic-ui-react';
 import Lesson from './components/Lesson';
 import Code from './components/Code';
 
@@ -26,6 +26,11 @@ class Kubernetes extends Component {
       configMap:
         name: demo-nginx-configmap
     `
+    minislateMD = `
+    $ ./minislate build
+    $ ./minislate start
+    $ ./minislate shell slate
+    `
 
   render() {
 
@@ -44,12 +49,28 @@ class Kubernetes extends Component {
             <Lesson title="A Quick Look at Kubectl" resources="https://kubernetes.io/docs/reference/kubectl/cheatsheet/">
         		<p> The first tool we're going to look at within Kubernetes is the Command Line Interface (CLI) titled 'kubectl' (pronounced cube-cuttle or cube-control). Kubectl lets users interact with the Kubernetes Cluster and its various components locally or remotely. </p>
 
-                <Header as='h5'> Start Minikube </Header>
-                <p> In order to play around with kubectl, let's start minikube up. If you've installed it as outlined in the 'Setting up Your Environment' page, you should just be able to run <Code> $ minikube start</Code>. This will initialize a VM, and start Kubernetes within it that we can play with. </p>
+                <Header as='h5'> Start Your Host Cluster </Header>
+                <Segment>
+                 <Grid columns={2} relaxed='very'>
+                    <Grid.Column>
+                        <Header as='h5'> Minislate </Header>
+                        <p> Once Minislate is downloaded, run
+                        <Code block> 
+                            {this.minislateMD}
+                        </Code>
+                        in order to start the cluster and begin executing commands within it. </p>
+                    </Grid.Column>
+                    <Grid.Column>
+                        <Header as='h5'> Minikube </Header>
+                        <p> In order to play around with kubectl, let's start minikube up. If you've installed it as outlined in the 'Setting up Your Environment' page, you should just be able to run <Code> $ minikube start</Code>. This will initialize a VM, and start Kubernetes within it that we can play with. </p>
+                    </Grid.Column>
+                </Grid>
+                <Divider vertical> OR </Divider>
+                </Segment>
 
                 <Header as='h5'> Get Resources </Header>
                 <p> The first, and maybe most important command is <Code> $ kubectl get pods</Code>. This command will fetch all resources of a certain type, and report some relevant infromation about them. In this case we've chosen pods, which will report back all pods in the current namespace, the readiness of the containers within the pod, the status of the pod as a whole, the number of times it has restarted, and the age of the pod. </p>
-                <p> If you've justart started your minikube Cluster to try this, you'll note that no pods yet. This is because all of the default pods run in the kube-system namespace. To see all pods running in your Cluster, run <Code> $ kubectl get pods --all-namespaces</Code>. </p>
+                <p> If you've just started your Cluster to try this, you'll note that no pods yet. This is because all of the default pods run in the kube-system namespace. To see all pods running in your Cluster, run <Code> $ kubectl get pods --all-namespaces</Code>. </p>
                 <p> Try to observe different types of resources like services, or deployments this way.</p>
                
                 <Header as='h5'> Describe Resources </Header>
@@ -102,7 +123,7 @@ class Kubernetes extends Component {
                 </List>
                 <Header as='h5'> Demo Service </Header>
                 <p> Let's take a look at a service. The service linked below is designed to target the Nginx deployment from above. Take a look at the yaml, and compare it to the firstDeployment.yaml. What do you notice? There are some shared elements of the service and deployment to link the two, namely the labels. Matching the labels of the pods with the selector in the service is how a service knows what to target and provide connection to. </p>
-                <p> Go ahead and install this service into your cluster with <Code> $ kubectl apply -f firstService.yaml</Code>. Once it's created, run <Code> kubectl get services</Code> to view the state of it. You can now connect to the service by running <Code> $ minikube service demo-nginx</Code>. This is a built in minikube function that will launch your default browser with the IP address of your Node and the port that demo-nginx exposed. You should see a welcome to nginx page if everything is running properly. We'll serve something more interesting later. </p>
+                <p> Go ahead and install this service into your cluster with <Code> $ kubectl apply -f firstService.yaml</Code>. Once it's created, run <Code> $ kubectl get services</Code> to view the state of it. While the services are visible, copy the NodePort your service is running on (after the colon on the right right). To access the service within Minislate, run <Code> $ curl kube:[nodeport]</Code>, and on minikube run <Code> $ minikube ssh curl localhost:[nodeport]</Code>. You should receive a welcome to nginx page if everything is running properly. We'll serve something more interesting later. </p>
         	</Lesson>
 
         	<Lesson title="Volumes" resources="https://kubernetes.io/docs/concepts/storage/volumes/">
@@ -157,7 +178,7 @@ class Kubernetes extends Component {
             <Code block>
               { this.configMapMD }
             </Code>
-            <p> Now that you've made the change, appy it with <Code> $ kubectl apply -f firstDeployment.yaml</Code>. If all has gone correctly, the container should restart with the index.html file mounted, and will be serving it. Try to recall how we accessed the NodePort service using minikube, and give it a try! </p>
+            <p> Now that you've made the change, appy it with <Code> $ kubectl apply -f firstDeployment.yaml</Code>. If all has gone correctly, the container should restart with the index.html file mounted, and will be serving it. Try to recall how we accessed the NodePort service and give it a try! </p>
         	</Lesson>
 
           <Lesson title="Cleaning it Up">
@@ -166,7 +187,7 @@ class Kubernetes extends Component {
 
         	<Lesson title="Debugging Strategies" resrouces="https://kubernetes.io/docs/tasks/debug-application-cluster/">
         		<p> Now we will do a small excercise in debugging. Deploy the debugging file by running <Code> $ kubectl apply -f kubernetesDebug.yaml </Code>. Inspect the deployment, pods, and service using get and describe, and see if you notice anything. </p>
-            <p> Everything should at this point look like it's working properly and there are no issues, but what happens if you try to connect to the server using <Code> $ minikube service demo-nginx </Code> again? There's definitely something awry here. </p>
+            <p> Everything should at this point look like it's working properly and there are no issues, but what happens if you try to connect to the server using the NodePort again? There's definitely something awry here. </p>
             <p> Take a close look at the yaml file, and see if there are any discrepencies. If you're stuck, review the lesson on services and how they know which pods to give connections to. Once you've found the issue and made the changes, go ahead and update the resources by running <Code> $ kubectl apply -f kubernetesDebug.yaml</Code> again and try to connect once more!</p>
             <p> Kubernetes is a fabulous and powerful tool for managing distributed systems, but because of the complexity it has a lot of points where things can go wrong. Often errors will be given before you can create the resource, usually using describe and looking at the events is very helpful for those that make it past creation but fall into an error state, though there are a few examples, like the one you just worked through, that will just take some kuberknowledge. When in doubt, look at events, and check the labels. </p>
         	</Lesson>
