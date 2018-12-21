@@ -13,7 +13,7 @@ class Setup extends Component {
 
             <Header as='h3'> Using a Developer SLATE Bundle </Header>
 
-            <Lesson title="Installing Minislate" resource="https://github.com/slateci/minislate">
+            <Lesson title="Installing Minislate" resources="https://github.com/slateci/minislate">
                 <p> Under "More Resources" you will find the Github page for a project called Minislate, as well as installation instructions. Minislate acts as a self-contained instance of the SLATE platform, including all the components listed below. Using this gives you access to the Cluster and the components running within it as if you are the System Admin of a SLATE Cluster. This is the recommended environment for the tutorial because there is far less burden to download and install each software, and Minislate itself runs as a container on your local machine that can be stopped or deleted with ease. </p>
             </Lesson>
 
